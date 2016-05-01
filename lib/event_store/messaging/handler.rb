@@ -14,6 +14,8 @@
       end
 
       module HandleMacro
+        class Error < RuntimeError; end
+
         def handle_macro(message_class, &blk)
           logger = Telemetry::Logger.get self
 
@@ -30,6 +32,13 @@
           handler_method_name = handler_name(message_class)
           send(:define_method, handler_method_name, &blk).tap do
             logger.opt_debug "Defined handler method (Method Name: #{handler_method_name}, Message: #{message_class})"
+          end
+
+          handler_method = instance_method(handler_method_name)
+          if handler_method.arity < 0
+            error_msg = "Handler for #{message_class.name} cannot have optional parameters"
+            Telemetry::Logger.get(self).error error_msg
+            raise Error, error_msg
           end
 
           handler_method_name
