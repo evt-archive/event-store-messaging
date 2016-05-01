@@ -69,7 +69,6 @@
           handler_method_name = Info.handler_name(message)
 
           method = instance.method(handler_method_name)
-          arity = method.arity
 
           case method.arity
           when 0
