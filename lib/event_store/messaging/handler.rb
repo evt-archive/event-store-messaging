@@ -31,6 +31,8 @@
           send(:define_method, handler_method_name, &blk).tap do
             logger.opt_debug "Defined handler method (Method Name: #{handler_method_name}, Message: #{message_class})"
           end
+
+          handler_method_name
         end
       end
 
