@@ -64,6 +64,15 @@ module EventStore
         def self.example
           SomeHandler.new
         end
+
+        def self.define_optional_parameter_handler
+          Class.new do
+            include EventStore::Messaging::Handler
+
+            handle Controls::Message::SomeMessage do |message=nil|
+            end
+          end
+        end
       end
     end
   end
