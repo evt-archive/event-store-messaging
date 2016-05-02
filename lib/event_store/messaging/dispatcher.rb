@@ -77,7 +77,6 @@ module EventStore
       end
 
       module BuildMessage
-        # ---
         def build_message(event_data)
           type = event_data.type
 
@@ -107,7 +106,6 @@ module EventStore
         self.class.build_message(entry_data)
       end
 
-      # ---
       def dispatch(message, event_data)
         observers.notify :dispatching, message, event_data
 

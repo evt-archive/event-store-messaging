@@ -49,20 +49,14 @@ module EventStore
         nil
       end
 
-      # ---
       def dispatch_event_data(event_data, &supplemental_action)
         message = dispatch(event_data)
-
-        # if !!supplemental_action && !!message
-        #   supplemental_action.call(message, event_data)
-        # end
 
         if !!supplemental_action
           supplemental_action.call(message, event_data)
         end
       end
 
-      # ---
       def dispatch(event_data)
         logger.opt_trace "Dispatching event data (Type: #{event_data.type})"
         logger.opt_data event_data.inspect
