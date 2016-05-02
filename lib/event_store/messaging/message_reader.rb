@@ -52,7 +52,7 @@ module EventStore
       def dispatch_event_data(event_data, &supplemental_action)
         message = dispatch(event_data)
 
-        if !!supplemental_action && !!message
+        if !!supplemental_action
           supplemental_action.call(message, event_data)
         end
       end
