@@ -85,7 +85,7 @@ module EventStore
           message_class = message_registry.get(type)
 
           if message_class.nil?
-            logger.warn "No message class registered (Type: #{type})"
+            logger.opt_debug "No message class registered (Type: #{type})"
             return nil
           end
 
