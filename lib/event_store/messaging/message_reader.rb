@@ -41,12 +41,15 @@ module EventStore
       def start(&supplemental_action)
         logger.opt_trace "Reading messages (Stream Name: #{stream_name})"
 
+        last_event_number = nil
         reader.each do |event_data|
           dispatch_event_data event_data, &supplemental_action
+          last_event_number = event_data.number
         end
 
-        logger.opt_debug "Read messages (Stream Name: #{stream_name})"
-        nil
+        logger.opt_debug "Read messages (Stream Name: #{stream_name}, Last Event Number: #{last_event_number})"
+
+        last_event_number
       end
 
       def dispatch_event_data(event_data, &supplemental_action)
