@@ -26,7 +26,9 @@ module EventStore
         class HandledMessage
           include EventStore::Messaging::Message
 
-          attribute :handlers, Array, default: [], lazy: true
+          def handlers
+            @handlers ||= []
+          end
 
           def handler?(handler_name)
             handlers.any? { |name| name == handler_name }
