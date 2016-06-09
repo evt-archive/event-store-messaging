@@ -2,22 +2,26 @@
   module Messaging
     module Handler
       def self.included(cls)
-        cls.extend HandleMacro
-        cls.extend MessageRegistry
-        cls.extend Info
-        cls.extend Handle
-        cls.extend Build
-        cls.extend Virtual::Macro
+        cls.class_exec do
+          extend HandleMacro
+          extend MessageRegistry
+          extend Info
+          extend Handle
+          extend Build
+          extend Virtual::Macro
 
-        cls.send :virtual, :configure_dependencies
-        cls.send :dependency, :logger, Telemetry::Logger
+          virtual :configure_dependencies
+          alias :configure :configure_dependencies
+
+          send :dependency, :logger, Telemetry::Logger
+        end
       end
 
       module HandleMacro
         class Error < RuntimeError; end
 
         def handle_macro(message_class, &blk)
-          logger = Telemetry::Logger.get self
+          logger = Telemetry::Logger.get self # Is this even used?
 
           define_handler_method(message_class, &blk)
           message_registry.register(message_class)
