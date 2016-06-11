@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'event_store-messaging'
-  s.version = '0.4.0.2'
+  s.version = '0.5.0.0'
   s.summary = 'Messaging primitives for EventStore using the EventStore Client HTTP library'
   s.description = ' '
 
