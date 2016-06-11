@@ -94,8 +94,12 @@ module EventStore
         end
       end
 
-      def handlers
+      def handler_registry
         self.class.handler_registry
+      end
+
+      def handlers
+        handler_registry
       end
 
       def register_handler(handler_class)
