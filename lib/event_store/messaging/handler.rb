@@ -80,26 +80,27 @@
       module Handle
         def call(message, event_data=nil)
           instance = build
-
-          handler_method_name = Info.handler_name(message)
-
-          method = instance.method(handler_method_name)
-
-          case method.arity
-          when 0
-            instance.send handler_method_name
-          when 1
-            instance.send handler_method_name, message
-          when 2
-            instance.send handler_method_name, message, event_data
-          end
+          instance.(message, event_data)
         end
         alias :! :call # TODO: Remove deprecated actuator [Kelsey, Thu Oct 08 2015]
       end
 
       def handle(message, event_data=nil)
-        self.class.(message, event_data)
+        handler_method_name = Info.handler_name(message)
+
+        method = method(handler_method_name)
+
+        case method.arity
+        when 0
+          send handler_method_name
+        when 1
+          send handler_method_name, message
+        when 2
+          send handler_method_name, message, event_data
+        end
       end
+      alias :call :handle
+      alias :! :call # TODO: Remove deprecated actuator [Kelsey, Thu Oct 08 2015]
     end
   end
 end
