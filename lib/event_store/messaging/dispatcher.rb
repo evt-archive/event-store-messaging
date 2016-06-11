@@ -17,9 +17,12 @@ module EventStore
       end
 
       module HandlerMacro
-        def handler(handler_class)
-          handler_registry.register(handler_class)
+        def handler_macro(handler_class)
+          handler = handler_class.build
+          handler_registry.register(handler)
         end
+        alias :handler :handler_macro
+        alias :register_handler :handler_macro
       end
 
       module MessageRegistry
@@ -33,11 +36,12 @@ module EventStore
           @handler_registry ||= build_handler_registry
         end
 
+        # record handler instances
         def build_handler_registry
           handler_registry = EventStore::Messaging::HandlerRegistry.build
           this = self
-          handler_registry.after_register do |handler_class|
-            this.register_message_classes(handler_class.message_registry)
+          handler_registry.after_register do |handler|
+            this.register_message_classes(handler.class.message_registry)
           end
           handler_registry
         end
@@ -94,16 +98,16 @@ module EventStore
         end
       end
 
-      def handler_registry
+      ################################
+      # Instance
+
+      def handlers
         self.class.handler_registry
       end
 
-      def handlers
-        handler_registry
-      end
-
       def register_handler(handler_class)
-        self.class.handler_registry.register(handler_class)
+        # self.class.handler_registry.register(handler_class)
+        self.class.register_handler(handler_class)
       end
 
       def build_message(entry_data)

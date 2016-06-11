@@ -85,6 +85,10 @@
         alias :! :call # TODO: Remove deprecated actuator [Kelsey, Thu Oct 08 2015]
       end
 
+      def handles?(message)
+        self.class.handles?(message)
+      end
+
       def handle(message, event_data=nil)
         handler_method_name = Info.handler_name(message)
 
