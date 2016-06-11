@@ -4,8 +4,8 @@ module EventStore
       include Registry
 
       def get(message)
-        items.select do |handler_class|
-          handler_class.handles? message
+        items.select do |handler|
+          handler.handles? message
         end
       end
     end

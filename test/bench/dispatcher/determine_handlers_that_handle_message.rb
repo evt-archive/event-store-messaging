@@ -1,18 +1,26 @@
 require_relative 'dispatcher_init'
 
 context "Dispatcher" do
-  test "Determines handlers that it can dispatch a message to" do
+  context "Determines handlers that it can dispatch a message to" do
     dispatcher = EventStore::Messaging::Controls::Dispatcher.example
     message = EventStore::Messaging::Controls::Message.example
 
-    handler_classes = dispatcher.handlers.get(message)
+    handlers = dispatcher.handlers.get(message)
 
-    names = handler_classes.map do |handler_class|
-      handler_class.name.split('::').last
+    names = handlers.map do |handler|
+      handler.class.name.split('::').last
     end
 
-    assert(names.include? 'SomeHandler')
-    assert(names.include? 'OtherHandler')
-    assert(!(names.include? 'AnotherHandler'))
+    test 'SomeHandler' do
+      assert(names.include? 'SomeHandler')
+    end
+
+    test 'OtherHandler' do
+      assert(names.include? 'OtherHandler')
+    end
+
+    test 'AnotherHandler' do
+      assert(!(names.include? 'AnotherHandler'))
+    end
   end
 end
