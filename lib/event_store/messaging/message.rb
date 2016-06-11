@@ -85,7 +85,7 @@ module EventStore
       module Linked
         def linked(metadata)
           Telemetry::Logger.build(self).obsolete "The `linked' method is obsolete. Consider using the `proceed' method."
-          proceed(metadata)
+          proceed(metadata, copy: false)
         end
       end
 

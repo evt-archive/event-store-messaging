@@ -17,7 +17,7 @@ module EventStore
             copy = true
           end
 
-          copy ||= false
+          copy = true if copy.nil?
 
           if receiver.nil?
             receiver = self
