@@ -11,7 +11,10 @@
           extend Virtual::Macro
 
           virtual :configure
-          alias :configure_dependencies :configure
+
+          virtual :configure_dependencies do
+            configure
+          end
 
           send :dependency, :logger, Telemetry::Logger
         end
@@ -72,7 +75,7 @@
         def build
           new.tap do |instance|
             Telemetry::Logger.configure instance
-            instance.configure
+            instance.configure_dependencies
           end
         end
       end

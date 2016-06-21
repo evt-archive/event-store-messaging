@@ -47,7 +47,7 @@ module EventStore
 
           attr_accessor :configured_dependencies
 
-          def configure
+          def configure_dependencies
             self.configured_dependencies = true
           end
         end
