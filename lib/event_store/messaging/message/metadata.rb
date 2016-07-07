@@ -10,6 +10,12 @@ module EventStore
         attribute :reply_stream_name
         attribute :schema_version
 
+        def position
+          return nil if source_event_uri.nil?
+          source_event_uri.split('/').last.to_i
+        end
+        alias :event_number :position
+
         def clear_reply_stream_name
           self.reply_stream_name = nil
         end

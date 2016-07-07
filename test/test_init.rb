@@ -18,5 +18,6 @@ require 'test_bench'; TestBench.activate
 
 require 'event_store/messaging/controls'
 require 'securerandom'
+require 'pp'
 
 Telemetry::Logger::AdHoc.activate
