@@ -113,8 +113,22 @@ module EventStore
       end
 
       module Assertions
-        def attributes_equal?(message, attributes=nil)
-          self.eql(message, attributes, ignore_class: true)
+        def attributes_equal?(other, attributes=nil)
+          attributes ||= self.class.attribute_names
+
+          equal = self.eql(other, attributes, ignore_class: true)
+
+          if !equal
+            require 'pp'
+            puts "self: #{self.class.name}"
+            pp self.attributes.select { |k, v| attributes.include? k }
+            puts "other #{other.class.name}:"
+            pp other.attributes.select { |k, v| attributes.include? k }
+            puts "attributes:"
+            attributes.each { |a| puts a.inspect}
+          end
+
+          equal
         end
       end
     end
