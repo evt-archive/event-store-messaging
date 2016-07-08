@@ -28,11 +28,15 @@ module EventStore
         metadata.precedence?(other_message.metadata)
       end
 
-      def ==(other, attributes=nil)
-        attributes ||= attribute_names
+      def ==(other, attributes=nil, ignore_class: nil)
+        attributes ||= self.class.attribute_names
         attributes = Array(attributes)
 
-        return false if self.class != other.class
+        ignore_class = false if ignore_class.nil?
+
+        if !ignore_class
+          return false if self.class != other.class
+        end
 
         attributes.each do |attribute|
           return false if public_send(attribute) != other.public_send(attribute)
@@ -105,6 +109,12 @@ module EventStore
           message.metadata = metadata
 
           message
+        end
+      end
+
+      module Assertions
+        def attributes_equal?(message, attributes=nil)
+          self.eql(message, attributes, ignore_class: true)
         end
       end
     end
