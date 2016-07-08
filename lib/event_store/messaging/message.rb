@@ -28,11 +28,17 @@ module EventStore
         metadata.precedence?(other_message.metadata)
       end
 
-      def ==(other)
-        (
-          self.class == other.class &&
-          to_h == other.to_h
-        )
+      def ==(other, attributes=nil)
+        attributes ||= attribute_names
+        attributes = Array(attributes)
+
+        return false if self.class != other.class
+
+        attributes.each do |attribute|
+          return false if public_send(attribute) != other.public_send(attribute)
+        end
+
+        true
       end
       alias :eql :==
 
