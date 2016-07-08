@@ -16,7 +16,6 @@
             configure
           end
 
-          # send :dependency, :logger, Telemetry::Logger
           dependency :logger, Telemetry::Logger
         end
       end
