@@ -1,6 +1,8 @@
 module EventStore
   module Messaging
     class MessageReader
+      configure :reader
+
       attr_reader :stream_name
       attr_reader :ending_position
 
@@ -30,14 +32,6 @@ module EventStore
 
           instance.dispatcher = dispatcher
         end
-      end
-
-      def self.configure(receiver, stream_name, dispatcher, starting_position: nil, slice_size: nil, session: nil, attr_name: nil)
-        attr_name ||= :reader
-
-        instance = build(stream_name, dispatcher, starting_position: starting_position, slice_size: slice_size, session: session)
-        receiver.public_send "#{attr_name}=", instance
-        instance
       end
 
       def start(&supplemental_action)
