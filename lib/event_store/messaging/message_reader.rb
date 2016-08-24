@@ -35,7 +35,7 @@ module EventStore
       end
 
       def start(&supplemental_action)
-        logger.opt_trace "Reading messages (Stream Name: #{stream_name}, Version: #{ending_position.inspect})"
+        logger.opt_trace "Reading messages (Stream Name: #{stream_name}, EndingPosition: #{ending_position.inspect})"
 
         last_event_number = nil
         reader.each do |event_data|
@@ -45,7 +45,7 @@ module EventStore
           break if last_event_number == ending_position
         end
 
-        logger.opt_debug "Read messages (Stream Name: #{stream_name}, Last Event Number: #{last_event_number}, Version: #{ending_position.inspect})"
+        logger.opt_debug "Read messages (Stream Name: #{stream_name}, Last Event Number: #{last_event_number}, EndingPosition: #{ending_position.inspect})"
 
         last_event_number
       end
