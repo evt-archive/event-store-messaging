@@ -2,6 +2,7 @@ module EventStore
   module Messaging
     class MessageReader
       attr_reader :stream_name
+      attr_reader :ending_position
 
       dependency :reader, EventStore::Client::HTTP::EventReader
       dependency :dispatcher, EventStore::Messaging::Dispatcher
@@ -15,14 +16,15 @@ module EventStore
         @slice_size ||= 20
       end
 
-      def initialize(stream_name, starting_position=nil, slice_size=nil)
+      def initialize(stream_name, starting_position=nil, slice_size=nil, ending_position=nil)
         @stream_name = stream_name
         @starting_position = starting_position
         @slice_size = slice_size
+        @ending_position = ending_position
       end
 
-      def self.build(stream_name, dispatcher, starting_position: nil, slice_size: nil, session: nil)
-        new(stream_name, starting_position, slice_size).tap do |instance|
+      def self.build(stream_name, dispatcher, starting_position: nil, slice_size: nil, session: nil, ending_position: nil)
+        new(stream_name, starting_position, slice_size, ending_position).tap do |instance|
           http_reader.configure instance, stream_name, starting_position: starting_position, slice_size: slice_size, session: session
           Telemetry::Logger.configure instance
 
@@ -39,15 +41,17 @@ module EventStore
       end
 
       def start(&supplemental_action)
-        logger.opt_trace "Reading messages (Stream Name: #{stream_name})"
+        logger.opt_trace "Reading messages (Stream Name: #{stream_name}, Version: #{ending_position.inspect})"
 
         last_event_number = nil
         reader.each do |event_data|
           dispatch_event_data event_data, &supplemental_action
           last_event_number = event_data.number
+
+          break if last_event_number == ending_position
         end
 
-        logger.opt_debug "Read messages (Stream Name: #{stream_name}, Last Event Number: #{last_event_number})"
+        logger.opt_debug "Read messages (Stream Name: #{stream_name}, Last Event Number: #{last_event_number}, Version: #{ending_position.inspect})"
 
         last_event_number
       end
