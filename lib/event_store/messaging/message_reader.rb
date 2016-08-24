@@ -25,7 +25,7 @@ module EventStore
         @ending_position = ending_position
       end
 
-      def self.build(stream_name, dispatcher, starting_position: nil, slice_size: nil, session: nil, ending_position: nil)
+      def self.build(stream_name, dispatcher, starting_position: nil, ending_position: nil, slice_size: nil, session: nil)
         new(stream_name, starting_position, slice_size, ending_position).tap do |instance|
           http_reader.configure instance, stream_name, starting_position: starting_position, slice_size: slice_size, session: session
           Telemetry::Logger.configure instance
