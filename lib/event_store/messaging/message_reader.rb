@@ -3,8 +3,10 @@ module EventStore
     class MessageReader
       configure :reader
 
+      attr_accessor :ending_position
+      attr_writer :slice_size
+      attr_writer :starting_position
       attr_reader :stream_name
-      attr_reader :ending_position
 
       dependency :reader, EventStore::Client::HTTP::EventReader
       dependency :dispatcher, EventStore::Messaging::Dispatcher
@@ -18,15 +20,16 @@ module EventStore
         @slice_size ||= 20
       end
 
-      def initialize(stream_name, starting_position=nil, slice_size=nil, ending_position=nil)
+      def initialize(stream_name)
         @stream_name = stream_name
-        @starting_position = starting_position
-        @slice_size = slice_size
-        @ending_position = ending_position
       end
 
       def self.build(stream_name, dispatcher, starting_position: nil, ending_position: nil, slice_size: nil, session: nil)
-        new(stream_name, starting_position, slice_size, ending_position).tap do |instance|
+        new(stream_name).tap do |instance|
+          instance.starting_position = starting_position
+          instance.ending_position = ending_position
+          instance.slice_size = slice_size
+
           http_reader.configure instance, stream_name, starting_position: starting_position, slice_size: slice_size, session: session
           Telemetry::Logger.configure instance
 
