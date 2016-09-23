@@ -1,5 +1,9 @@
+require 'identifier/uuid/controls'
+require 'clock/controls'
+
 require 'event_store/client/http/controls'
 
+require 'event_store/messaging/controls/id'
 require 'event_store/messaging/controls/stream_name'
 require 'event_store/messaging/controls/event_data/read'
 require 'event_store/messaging/controls/message/metadata'
@@ -8,4 +12,5 @@ require 'event_store/messaging/controls/handler'
 require 'event_store/messaging/controls/dispatcher'
 require 'event_store/messaging/controls/dispatcher/observers'
 require 'event_store/messaging/controls/registry'
+require 'event_store/messaging/controls/time'
 require 'event_store/messaging/controls/writer'

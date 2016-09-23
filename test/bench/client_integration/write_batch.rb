@@ -9,8 +9,8 @@ context "Write Batch of Events" do
 
   writer = EventStore::Client::HTTP::EventWriter.build
 
-  token_1 = Controls::ID.get 1
-  token_2 = Controls::ID.get 2
+  token_1 = EventStore::Messaging::Controls::ID.example 1
+  token_2 = EventStore::Messaging::Controls::ID.example 2
 
   message_1 = EventStore::Messaging::Controls::Message.example
   message_2 = EventStore::Messaging::Controls::Message.example

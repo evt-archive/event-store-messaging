@@ -4,7 +4,7 @@ module EventStore
       module Message
         module Metadata
           def self.uuid
-            ::Controls::ID.get
+            ID.example
           end
 
           def self.source_event_uri

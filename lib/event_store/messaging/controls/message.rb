@@ -51,7 +51,7 @@ module EventStore
         end
 
         def self.time(time=nil)
-          time || ::Controls::Time.reference
+          time || Time.example
         end
 
         def self.data(time=nil)
