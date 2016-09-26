@@ -21,6 +21,14 @@ module EventStore
         end
 
         module Anomaly
+          module Module
+            module Example
+              extend EventStore::Messaging::StreamName
+
+              category 'some_category'
+            end
+          end
+
           module Underscore
             class Example
               include EventStore::Messaging::StreamName

@@ -8,11 +8,19 @@ module EventStore
         cls.extend Macro
       end
 
+      def self.extended(mod)
+        mod.extend Macro
+      end
+
       module Macro
         def category_macro(category_name)
           category_name = Casing::Camel.(category_name, symbol_to_string: true)
           self.send :define_method, :category_name do
             @category_name || category_name
+          end
+
+          if self.instance_of? Module
+            self.send :module_function, :category_name
           end
         end
         alias :category :category_macro
