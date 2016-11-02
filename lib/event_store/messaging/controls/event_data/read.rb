@@ -8,11 +8,9 @@ module EventStore
 
             EventStore::Client::HTTP::Controls::EventData::Read.data(
               number,
-              time: time,
               stream_name: stream_name,
               metadata: metadata,
-              type: type,
-              omit_metadata: omit_metadata
+              type: type
             )
           end
 

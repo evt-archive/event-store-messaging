@@ -8,7 +8,7 @@ module EventStore
           end
 
           def self.source_event_uri
-            "streams/sourceStream-#{uuid}/0"
+            EventStore::Client::HTTP::Controls::EventData::Read::Links::Edit.example
           end
 
           def self.causation_event_uri
