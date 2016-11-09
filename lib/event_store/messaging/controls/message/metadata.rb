@@ -7,8 +7,11 @@ module EventStore
             ID.example
           end
 
-          def self.source_event_uri
-            EventStore::Client::HTTP::Controls::EventData::Read::Links::Edit.example
+          def self.source_event_uri(stream_name: nil, stream_position: nil)
+            EventStore::Client::HTTP::Controls::EventData::Read::Links::Edit.example(
+              stream_name: stream_name,
+              number: stream_position
+            )
           end
 
           def self.causation_event_uri
