@@ -12,8 +12,8 @@ module EventStore
           Example.new
         end
 
-        def self.get(category=nil, id=nil, random: nil)
-          EventStore::Client::HTTP::Controls::StreamName.get category, id, random: random
+        def self.get(category=nil)
+          EventStore::Client::HTTP::Controls::StreamName.get category: category
         end
 
         def self.reference

@@ -15,11 +15,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.3.3'
 
-  s.add_runtime_dependency 'configure'
   s.add_runtime_dependency 'event_store-client-http'
-  s.add_runtime_dependency 'telemetry'
-  s.add_runtime_dependency 'serialize'
 
-  s.add_development_dependency 'process_host'
   s.add_development_dependency 'test_bench'
 end
