@@ -6,8 +6,11 @@ module EventStore
           def self.data(number=nil, time: nil, stream_name: nil, metadata: nil, type: nil, omit_metadata: nil)
             type ||= 'SomeMessage'
 
+            data = Message.data
+
             EventStore::Client::HTTP::Controls::EventData::Read.data(
               number,
+              data: data,
               stream_name: stream_name,
               metadata: metadata,
               type: type
