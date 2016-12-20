@@ -1,6 +1,3 @@
-require 'identifier/uuid/controls'
-require 'clock/controls'
-
 require 'event_store/client/http/controls'
 
 require 'event_store/messaging/controls/id'
