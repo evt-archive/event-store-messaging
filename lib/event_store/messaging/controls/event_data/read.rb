@@ -20,7 +20,7 @@ module EventStore
           def self.example(omit_metadata: nil)
             raw_data = data(omit_metadata: omit_metadata)
 
-            Serialize::Read.instance raw_data, Client::HTTP::EventData::Read
+            Transform::Read.instance raw_data, Client::HTTP::EventData::Read
           end
 
           module Anomaly
@@ -29,7 +29,7 @@ module EventStore
             end
 
             def self.example
-              Serialize::Read.instance data, Client::HTTP::EventData::Read
+              Transform::Read.instance data, Client::HTTP::EventData::Read
             end
           end
         end
