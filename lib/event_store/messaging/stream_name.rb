@@ -2,7 +2,6 @@ module EventStore
   module Messaging
     module StreamName
       extend self
-      include EventStore::Client::StreamName
 
       def self.included(cls)
         cls.extend Macro
@@ -35,17 +34,20 @@ module EventStore
 
       def stream_name(id, category_name=nil)
         category_name ||= self.category_name
-        EventStore::Client::StreamName.stream_name category_name, id
+
+        EventSource::StreamName.stream_name category_name, id
       end
 
       def command_stream_name(id, category_name=nil)
         category_name ||= self.category_name
-        EventStore::Client::StreamName.stream_name "#{category_name}:command", id
+
+        EventSource::StreamName.stream_name "#{category_name}:command", id
       end
 
       def category_stream_name(category_name=nil)
         category_name ||= self.category_name
-        EventStore::Client::StreamName.category_stream_name(category_name)
+
+        "$ce-#{category_name}"
       end
 
       def command_category_stream_name(category_name=nil)
@@ -56,11 +58,23 @@ module EventStore
       end
 
       def self.get_category(stream_name)
-        EventStore::Client::StreamName.get_category stream_name
+        category, _ = split stream_name
+        category
       end
 
       def self.get_id(stream_name)
-        EventStore::Client::StreamName.get_id stream_name
+        _, stream_id = split stream_name
+        stream_id
+      end
+
+      def self.split(stream_name)
+        if stream_name.start_with? '$ce-'
+          _, category = stream_name.split '-', 2
+        else
+          category, stream_id = stream_name.split '-', 2
+        end
+
+        return category, stream_id
       end
     end
   end
