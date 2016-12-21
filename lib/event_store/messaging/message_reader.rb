@@ -88,6 +88,20 @@ module EventStore
       def self.logger
         Telemetry::Logger.get self
       end
+
+      module Assertions
+        def self.extended(message_reader)
+          client_reader = message_reader.reader
+
+          client_reader.extend client_reader.class::Assertions
+        end
+
+        def session?(session)
+          client_reader = reader
+
+          client_reader.session? session
+        end
+      end
     end
   end
 end

@@ -111,6 +111,20 @@ module EventStore
         end
       end
 
+      module Assertions
+        def self.extended(writer)
+          client_writer = writer.writer
+
+          client_writer.extend client_writer.class::Assertions
+        end
+
+        def session?(session)
+          client_writer = self.writer
+
+          client_writer.session? session
+        end
+      end
+
       module Substitute
         def self.build
           Substitute::Writer.build.tap do |substitute_writer|
