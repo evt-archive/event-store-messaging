@@ -21,7 +21,9 @@ context "Write Batch of Events" do
   writer = EventStore::Messaging::Writer.build
   writer.write [message_1, message_2], stream_name
 
-  get = EventStore::Client::HTTP::Request::Get.build
+  session = EventStore::Client::HTTP::Session.build
+  get = EventSource::EventStore::HTTP::Request::Get.build session: session
+
   body_text_1, get_response = get.("#{path}/0")
   body_text_2, get_response = get.("#{path}/1")
 

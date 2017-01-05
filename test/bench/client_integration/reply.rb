@@ -15,7 +15,10 @@ context "Replying to a Message" do
 
   test "Writes the message to the reply stream" do
     path = "/streams/#{reply_stream_name}"
-    get = EventStore::Client::HTTP::Request::Get.build
+
+    session = EventStore::Client::HTTP::Session.build
+    get = EventSource::EventStore::HTTP::Request::Get.build session: session
+
     body_text, get_response = get.("#{path}/0")
 
     assert(!body_text.nil?)

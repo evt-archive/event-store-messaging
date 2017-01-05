@@ -11,7 +11,10 @@ context "Message Writer" do
     writer.write message, stream_name
 
     path = "/streams/#{stream_name}"
-    get = EventStore::Client::HTTP::Request::Get.build
+
+    session = EventStore::Client::HTTP::Session.build
+    get = EventSource::EventStore::HTTP::Request::Get.build session: session
+
     body_text, get_response = get.("#{path}/0")
 
     assert(!body_text.nil?)
